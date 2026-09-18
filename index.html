@@ -1,0 +1,880 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>IoT Weather Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0f172a, #1d4ed8);
+            color: white;
+        }
+
+        header {
+            padding: 20px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(0,0,0,0.25);
+        }
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+        .time {
+            font-size: 14px;
+        }
+
+        main {
+            width: 90%;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        .title {
+            text-align: center;
+            padding: 45px 10px 25px;
+        }
+
+        .title h1 {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .title p {
+            color: #dbeafe;
+        }
+
+        .search {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0 35px;
+            flex-wrap: wrap;
+        }
+
+        .search input {
+            width: 320px;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        button {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            background: #38bdf8;
+            color: #082f49;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #7dd3fc;
+        }
+
+        .weather-main {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 40px;
+            border-radius: 20px;
+            background: rgba(255,255,255,0.12);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .location h2 {
+            font-size: 35px;
+            margin-bottom: 8px;
+        }
+
+        .location p {
+            color: #dbeafe;
+            margin: 7px 0;
+        }
+
+        .temperature {
+            text-align: center;
+        }
+
+        .icon {
+            font-size: 60px;
+        }
+
+        .temperature h2 {
+            font-size: 60px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .card {
+            padding: 25px;
+            text-align: center;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.12);
+            transition: 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            background: rgba(255,255,255,0.18);
+        }
+
+        .card-icon {
+            font-size: 38px;
+            margin-bottom: 10px;
+        }
+
+        .card h3 {
+            color: #bfdbfe;
+            margin-bottom: 10px;
+        }
+
+        .value {
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .status {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 18px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .online {
+            color: #4ade80;
+            font-weight: bold;
+        }
+
+        .about {
+            margin-top: 30px;
+            padding: 30px;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.1);
+            line-height: 1.7;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 25px;
+            text-align: center;
+            background: rgba(0,0,0,0.3);
+            color: #bfdbfe;
+        }
+
+        @media(max-width: 750px) {
+
+            .weather-main {
+                flex-direction: column;
+                gap: 30px;
+                text-align: center;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            header {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        @media(max-width: 500px) {
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .title h1 {
+                font-size: 28px;
+            }
+
+            .search input {
+                width: 100%;
+            }
+
+            button {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        🌦️ IoT Weather Dashboard
+    </div>
+
+    <div class="time" id="clock">
+        Loading...
+    </div>
+
+</header>
+
+
+<main>
+
+
+    <section class="title">
+
+        <h1>
+            Smart Weather Monitoring System
+        </h1>
+
+        <p>
+            Real-Time IoT Weather Monitoring Dashboard
+        </p>
+
+    </section>
+
+
+    <div class="search">
+
+        <input
+            type="text"
+            id="city"
+            placeholder="Enter city name"
+        >
+
+        <button onclick="searchWeather()">
+            🔍 Search
+        </button>
+
+        <button onclick="getLocation()">
+            📍 My Location
+        </button>
+
+    </div>
+
+
+    <section class="weather-main">
+
+
+        <div class="location">
+
+            <h2 id="cityName">
+                Hyderabad
+            </h2>
+
+            <p id="country">
+                India
+            </p>
+
+            <p id="condition">
+                ☀️ Clear Sky
+            </p>
+
+        </div>
+
+
+        <div class="temperature">
+
+            <div class="icon" id="icon">
+                ☀️
+            </div>
+
+            <h2>
+                <span id="temp">30</span>°C
+            </h2>
+
+            <p>
+                Feels Like
+                <span id="feels">32</span>°C
+            </p>
+
+        </div>
+
+
+    </section>
+
+
+    <section class="cards">
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                💧
+            </div>
+
+            <h3>
+                Humidity
+            </h3>
+
+            <div class="value">
+                <span id="humidity">65</span>%
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                🌬️
+            </div>
+
+            <h3>
+                Wind Speed
+            </h3>
+
+            <div class="value">
+                <span id="wind">12</span>
+                km/h
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                🌡️
+            </div>
+
+            <h3>
+                Pressure
+            </h3>
+
+            <div class="value">
+                <span id="pressure">1008</span>
+                hPa
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                👁️
+            </div>
+
+            <h3>
+                Visibility
+            </h3>
+
+            <div class="value">
+                <span id="visibility">10</span>
+                km
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                🌅
+            </div>
+
+            <h3>
+                Sunrise
+            </h3>
+
+            <div class="value">
+                <span id="sunrise">06:02</span>
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <div class="card-icon">
+                🌇
+            </div>
+
+            <h3>
+                Sunset
+            </h3>
+
+            <div class="value">
+                <span id="sunset">18:20</span>
+            </div>
+
+        </div>
+
+
+    </section>
+
+
+    <section class="status">
+
+        <h2>
+            ⚙️ IoT System Status
+        </h2>
+
+        <br>
+
+        <p>
+            🟢 Weather Data:
+            <span class="online">
+                ONLINE
+            </span>
+        </p>
+
+        <p>
+            🟢 Dashboard:
+            <span class="online">
+                ACTIVE
+            </span>
+        </p>
+
+        <p>
+            🟢 Data Monitoring:
+            <span class="online">
+                RUNNING
+            </span>
+        </p>
+
+    </section>
+
+
+    <section class="about">
+
+        <h2>
+            📊 About the Project
+        </h2>
+
+        <br>
+
+        <p>
+            The IoT-Based Smart Weather Monitoring Dashboard
+            is designed to monitor important environmental
+            parameters such as temperature, humidity, wind
+            speed, atmospheric pressure and visibility.
+        </p>
+
+        <br>
+
+        <p>
+            The dashboard provides a simple and user-friendly
+            interface for displaying weather information in
+            real time. It can be extended in the future by
+            connecting sensors such as DHT11, BMP280 and
+            ESP32.
+        </p>
+
+    </section>
+
+
+</main>
+
+
+<footer>
+
+    <p>
+        IoT Weather Monitoring Dashboard
+    </p>
+
+    <p>
+        Developed using HTML, CSS & JavaScript
+    </p>
+
+</footer>
+
+
+
+<script>
+
+    // Digital Clock
+
+    function updateClock() {
+
+        let now = new Date();
+
+        document.getElementById("clock").innerHTML =
+            now.toLocaleString();
+
+    }
+
+    setInterval(updateClock, 1000);
+
+    updateClock();
+
+
+
+    // Weather Search
+
+    async function searchWeather() {
+
+        let city =
+            document.getElementById("city").value;
+
+        if (city === "") {
+
+            alert("Please enter a city name");
+
+            return;
+
+        }
+
+
+        try {
+
+            let locationURL =
+                "https://geocoding-api.open-meteo.com/v1/search?name="
+                + encodeURIComponent(city)
+                + "&count=1&language=en&format=json";
+
+
+            let locationResponse =
+                await fetch(locationURL);
+
+
+            let locationData =
+                await locationResponse.json();
+
+
+            if (!locationData.results) {
+
+                alert("City not found");
+
+                return;
+
+            }
+
+
+            let location =
+                locationData.results[0];
+
+
+            let latitude =
+                location.latitude;
+
+            let longitude =
+                location.longitude;
+
+
+            getWeatherData(
+                latitude,
+                longitude,
+                location.name,
+                location.country
+            );
+
+
+        }
+
+        catch(error) {
+
+            alert(
+                "Unable to get weather data"
+            );
+
+        }
+
+    }
+
+
+
+    // Get Weather Data
+
+    async function getWeatherData(
+        latitude,
+        longitude,
+        city,
+        country
+    ) {
+
+        try {
+
+            let url =
+                "https://api.open-meteo.com/v1/forecast?"
+                + "latitude=" + latitude
+                + "&longitude=" + longitude
+                + "&current=temperature_2m,"
+                + "relative_humidity_2m,"
+                + "apparent_temperature,"
+                + "pressure_msl,"
+                + "wind_speed_10m,"
+                + "weather_code,"
+                + "visibility"
+                + "&daily=sunrise,sunset"
+                + "&timezone=auto";
+
+
+            let response =
+                await fetch(url);
+
+
+            let data =
+                await response.json();
+
+
+            let weather =
+                data.current;
+
+
+            document.getElementById("cityName")
+                .innerHTML = city;
+
+
+            document.getElementById("country")
+                .innerHTML = country;
+
+
+            document.getElementById("temp")
+                .innerHTML =
+                Math.round(
+                    weather.temperature_2m
+                );
+
+
+            document.getElementById("feels")
+                .innerHTML =
+                Math.round(
+                    weather.apparent_temperature
+                );
+
+
+            document.getElementById("humidity")
+                .innerHTML =
+                weather.relative_humidity_2m;
+
+
+            document.getElementById("wind")
+                .innerHTML =
+                Math.round(
+                    weather.wind_speed_10m
+                );
+
+
+            document.getElementById("pressure")
+                .innerHTML =
+                Math.round(
+                    weather.pressure_msl
+                );
+
+
+            document.getElementById("visibility")
+                .innerHTML =
+                (
+                    weather.visibility / 1000
+                ).toFixed(1);
+
+
+            document.getElementById("sunrise")
+                .innerHTML =
+                formatTime(
+                    data.daily.sunrise[0]
+                );
+
+
+            document.getElementById("sunset")
+                .innerHTML =
+                formatTime(
+                    data.daily.sunset[0]
+                );
+
+
+            updateWeatherIcon(
+                weather.weather_code
+            );
+
+        }
+
+        catch(error) {
+
+            alert(
+                "Weather data could not be loaded"
+            );
+
+        }
+
+    }
+
+
+
+    // Weather Icon
+
+    function updateWeatherIcon(code) {
+
+        let icon = "☀️";
+
+        let description = "Clear Sky";
+
+
+        if(code === 0) {
+
+            icon = "☀️";
+            description = "Clear Sky";
+
+        }
+
+        else if(code <= 2) {
+
+            icon = "🌤️";
+            description = "Partly Cloudy";
+
+        }
+
+        else if(code === 3) {
+
+            icon = "☁️";
+            description = "Cloudy";
+
+        }
+
+        else if(code >= 45 && code <= 48) {
+
+            icon = "🌫️";
+            description = "Foggy";
+
+        }
+
+        else if(code >= 51 && code <= 67) {
+
+            icon = "🌧️";
+            description = "Rain";
+
+        }
+
+        else if(code >= 80 && code <= 82) {
+
+            icon = "🌦️";
+            description = "Rain Showers";
+
+        }
+
+        else if(code >= 95) {
+
+            icon = "⛈️";
+            description = "Thunderstorm";
+
+        }
+
+
+        document.getElementById("icon")
+            .innerHTML = icon;
+
+
+        document.getElementById("condition")
+            .innerHTML =
+            icon + " " + description;
+
+    }
+
+
+
+    // Time Format
+
+    function formatTime(time) {
+
+        let date =
+            new Date(time);
+
+        return date.toLocaleTimeString(
+            [],
+            {
+                hour: "2-digit",
+                minute: "2-digit"
+            }
+        );
+
+    }
+
+
+
+    // Get Current Location
+
+    function getLocation() {
+
+        if (!navigator.geolocation) {
+
+            alert(
+                "Geolocation is not supported"
+            );
+
+            return;
+
+        }
+
+
+        navigator.geolocation.getCurrentPosition(
+
+            function(position) {
+
+                getWeatherData(
+
+                    position.coords.latitude,
+
+                    position.coords.longitude,
+
+                    "Your Location",
+
+                    ""
+
+                );
+
+            },
+
+            function() {
+
+                alert(
+                    "Please allow location access"
+                );
+
+            }
+
+        );
+
+    }
+
+
+
+    // Load Hyderabad Weather Initially
+
+    getWeatherData(
+        17.3850,
+        78.4867,
+        "Hyderabad",
+        "India"
+    );
+
+</script>
+
+<script src="script.js"></script>
+
+
+</body>
+
+</html>
+
