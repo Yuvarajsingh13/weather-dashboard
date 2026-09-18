@@ -1,0 +1,278 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #0f172a, #1d4ed8);
+    color: white;
+}
+
+header {
+    width: 100%;
+    padding: 20px 7%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.25);
+}
+
+.logo {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.time {
+    font-size: 14px;
+    color: #dbeafe;
+}
+
+main {
+    width: 90%;
+    max-width: 1100px;
+    margin: auto;
+}
+
+.title {
+    text-align: center;
+    padding: 45px 10px 25px;
+}
+
+.title h1 {
+    font-size: 38px;
+    margin-bottom: 10px;
+}
+
+.title p {
+    color: #dbeafe;
+    font-size: 17px;
+}
+
+.search {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 35px;
+    flex-wrap: wrap;
+}
+
+.search input {
+    width: 320px;
+    padding: 14px 18px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    font-size: 16px;
+}
+
+button {
+    padding: 14px 20px;
+    border: none;
+    border-radius: 8px;
+    background: #38bdf8;
+    color: #082f49;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #7dd3fc;
+    transform: translateY(-2px);
+}
+
+.weather-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 40px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.location h2 {
+    font-size: 35px;
+    margin-bottom: 8px;
+}
+
+.location p {
+    color: #dbeafe;
+    margin: 8px 0;
+}
+
+#condition {
+    font-size: 19px;
+}
+
+.temperature {
+    text-align: center;
+}
+
+.icon {
+    font-size: 65px;
+    margin-bottom: 5px;
+}
+
+.temperature h2 {
+    font-size: 60px;
+}
+
+.temperature p {
+    color: #dbeafe;
+    margin-top: 5px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.card {
+    padding: 25px;
+    text-align: center;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.12);
+    backdrop-filter: blur(10px);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-6px);
+    background: rgba(255, 255, 255, 0.18);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+}
+
+.card-icon {
+    font-size: 38px;
+    margin-bottom: 12px;
+}
+
+.card h3 {
+    color: #bfdbfe;
+    margin-bottom: 10px;
+    font-size: 17px;
+}
+
+.value {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.status {
+    margin-top: 30px;
+    padding: 25px;
+    border-radius: 18px;
+    background: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.status h2 {
+    margin-bottom: 15px;
+}
+
+.status p {
+    margin: 10px 0;
+    color: #dbeafe;
+}
+
+.online {
+    color: #4ade80;
+    font-weight: bold;
+}
+
+.about {
+    margin-top: 30px;
+    padding: 30px;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.1);
+    line-height: 1.7;
+}
+
+.about h2 {
+    margin-bottom: 10px;
+}
+
+.about p {
+    color: #dbeafe;
+}
+
+footer {
+    margin-top: 40px;
+    padding: 25px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.3);
+    color: #bfdbfe;
+    line-height: 1.8;
+}
+
+@media (max-width: 750px) {
+
+    header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .title h1 {
+        font-size: 30px;
+    }
+
+    .weather-main {
+        flex-direction: column;
+        gap: 30px;
+        text-align: center;
+    }
+
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+
+    main {
+        width: 92%;
+    }
+
+    .title h1 {
+        font-size: 27px;
+    }
+
+    .search {
+        flex-direction: column;
+    }
+
+    .search input {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .weather-main {
+        padding: 30px 20px;
+    }
+
+    .location h2 {
+        font-size: 28px;
+    }
+
+    .temperature h2 {
+        font-size: 50px;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+}
+
